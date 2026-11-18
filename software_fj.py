@@ -45,3 +45,29 @@ class Entidad(ABC):
     @abstractmethod
     def describir(self):
         pass
+
+
+#Clase Cliente con atributos privados y validaciones.
+class Cliente(Entidad):
+    def __init__(self, id, nombre=None, email=None, telefono=None):
+        super().__init__(id)
+        if not nombre or not email or not telefono:
+            raise ClienteError("Faltan datos del cliente.")
+        if not isinstance(nombre, str) or not isinstance(email, str) or not isinstance(telefono, str):
+            raise ClienteError("Nombre, email y teléfono deben ser texto.")
+        if not nombre.strip():
+            raise ClienteError("El nombre no puede estar vacío.")
+        partes = email.split("@")
+        if " " in email or len(partes) != 2 or not partes[0] or "." not in partes[1]:
+            raise ClienteError(f"Email inválido: {email}")
+        if not telefono.isdigit() or not 7 <= len(telefono) <= 10:
+            raise ClienteError(f"Teléfono inválido: {telefono} (debe tener de 7 a 10 dígitos)")
+        self.__nombre = nombre.strip()
+        self.__email = email
+        self.__telefono = telefono
+
+    def obtener_nombre(self):
+        return self.__nombre
+
+    def describir(self):
+        return f"Cliente {self._id}: {self.__nombre} ({self.__email})"
