@@ -12,3 +12,26 @@ def registrar_log(nivel, mensaje):
             archivo.write(f"{datetime.now():%Y-%m-%d %H:%M:%S} | {nivel} | {mensaje}\n")
     except OSError as error:
         print(f"   (No se pudo escribir en el log: {error})")
+
+
+#Excepciones personalizadas, todas heredan de ErrorFJ.
+class ErrorFJ(Exception):
+    pass
+
+class ClienteError(ErrorFJ):
+    pass
+
+class ServicioError(ErrorFJ):
+    pass
+
+class ServicioNoDisponibleError(ErrorFJ):
+    pass
+
+class ReservaError(ErrorFJ):
+    pass
+
+class OperacionNoPermitidaError(ErrorFJ):
+    pass
+
+class CalculoError(ErrorFJ):
+    pass
