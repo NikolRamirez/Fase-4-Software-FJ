@@ -35,3 +35,13 @@ class OperacionNoPermitidaError(ErrorFJ):
 
 class CalculoError(ErrorFJ):
     pass
+
+
+#Clase abstracta que representa las entidades generales del sistema.
+class Entidad(ABC):
+    def __init__(self, id):
+        self._id = id
+
+    @abstractmethod
+    def describir(self):
+        pass
