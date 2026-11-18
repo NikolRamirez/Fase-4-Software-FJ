@@ -71,3 +71,14 @@ class Cliente(Entidad):
 
     def describir(self):
         return f"Cliente {self._id}: {self.__nombre} ({self.__email})"
+
+
+#Lista interna de clientes (en lugar de base de datos).
+clientes = []
+
+def registrar_cliente(nombre=None, email=None, telefono=None):
+    cliente = Cliente(len(clientes) + 1, nombre, email, telefono)
+    clientes.append(cliente)
+    return cliente
+
+
