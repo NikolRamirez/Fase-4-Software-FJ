@@ -81,4 +81,101 @@ def registrar_cliente(nombre=None, email=None, telefono=None):
     clientes.append(cliente)
     return cliente
 
+# PARTE 2 - GESTIÓN DE SERVICIOS
+# Responsable: Yeny Rios
+
+from abc import ABC, abstractmethod
+
+
+# Clase abstracta Servicio que hereda de Entidad.
+# Clase abstracta que establece la estructura general
+# de los servicios ofrecidos por Software FJ.
+class Servicio(Entidad, ABC):
+
+    def __init__(self, id, nombre, precio_base, disponible=True):
+        super().__init__(id)
+
+        if not isinstance(nombre, str) or not nombre.strip():
+            raise ServicioError("El nombre del servicio es obligatorio.")
+
+        try:
+            precio_base = float(precio_base)
+        except (TypeError, ValueError) as error:
+            raise ServicioError("El precio debe ser numérico.") from error
+
+        if precio_base <= 0:
+            raise ServicioError("El precio debe ser mayor que cero.")
+
+        if not isinstance(disponible, bool):
+            raise ServicioError("La disponibilidad debe ser verdadera o falsa.")
+
+        self.__nombre = nombre.strip()
+        self.__precio_base = precio_base
+        self.__disponible = disponible
+
+    # Permite consultar el nombre del servicio.
+    def obtener_nombre(self):
+        return self.__nombre
+
+    # Permite consultar la disponibilidad.
+    def esta_disponible(self):
+        return self.__disponible
+
+    # Permite consultar el precio base.
+    def obtener_precio(self):
+        return self.__precio_base
+
+    # Valida que la duración sea positiva.
+    def validar_duracion(self, duracion):
+        try:
+            duracion = float(duracion)
+        except (TypeError, ValueError) as error:
+            raise ServicioError("La duración debe ser numérica.") from error
+
+        if duracion <= 0:
+            raise ServicioError("La duración debe ser mayor que cero.")
+
+        return duracion
+
+    # Método auxiliar para calcular el costo final.
+    def calcular_total(self, cantidad, impuesto=0, descuento=0):
+
+        try:
+            impuesto = float(impuesto)
+            descuento = float(descuento)
+        except (TypeError, ValueError) as error:
+            raise CalculoError("Impuesto y descuento deben ser numéricos.") from error
+
+        if not 0 <= impuesto <= 100:
+            raise CalculoError("El impuesto debe estar entre 0 y 100.")
+
+        if not 0 <= descuento <= 100:
+            raise CalculoError("El descuento debe estar entre 0 y 100.")
+
+        subtotal = cantidad * self.__precio_base
+        valor_descuento = subtotal * descuento / 100
+        valor_impuesto = (subtotal - valor_descuento) * impuesto / 100
+
+        total = subtotal - valor_descuento + valor_impuesto
+
+        if total < 0:
+            raise CalculoError("El cálculo produjo un valor inconsistente.")
+
+        return round(total, 2)
+
+    # Cada servicio debe implementar sus propios métodos.
+    @abstractmethod
+    def validar_parametros(self, duracion):
+        pass
+
+    @abstractmethod
+    def calcular_costo(self, duracion=1, impuesto=0, descuento=0):
+        pass
+
+    @abstractmethod
+    def describir(self):
+        pass
+
+
+
 
