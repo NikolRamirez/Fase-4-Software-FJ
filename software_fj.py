@@ -450,6 +450,36 @@ ejecutar(
     )
 )
 
+
+# Operacion 9 crear una reserva de sala para Ana (queda Pendiente)
+reserva_ana_sala = ejecutar(
+    9,
+    "Crear reserva de sala",
+    lambda: registrar_reserva(ana, sala_reuniones, duracion=2)
+)
+
+# Operacion 10 intentar procesarla sin confirmar (falla y lanza ReservaError)
+ejecutar(
+    10,
+    "Intentar procesar reserva sin confirmar",
+    lambda: reserva_ana_sala.procesar(impuesto=19, descuento=10)
+)
+
+# Operacion 11 confirmar la reserva correctamente
+ejecutar(
+    11,
+    "Confirmar la reserva de sala",
+    lambda: reserva_ana_sala.confirmar()
+)
+
+# Operacion 12 procesar la reserva ya confirmada con impuestos y descuento
+ejecutar(
+    12,
+    "Procesar la reserva confirmada",
+    lambda: reserva_ana_sala.procesar(impuesto=19, descuento=10)
+)
+
+
 #Cierre de la simulación
 registrar_log("INFO", "===== Fin de la simulación =====")
 print("\nPrograma terminado sin caerse. Revisa el archivo logs.txt")
