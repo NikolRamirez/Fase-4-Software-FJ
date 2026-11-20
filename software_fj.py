@@ -297,5 +297,57 @@ def registrar_servicio(servicio):
     servicios.append(servicio)
     return servicio
 
+# SIMULACIÓN DE OPERACIONES DE SERVICIOS - YENY
 
+# Operación 4: Registrar una sala correctamente.
+sala_reuniones = ejecutar(
+    4,
+    "Registrar servicio de reserva de sala",
+    lambda: registrar_servicio(
+        ReservaSala(1, "Sala de reuniones", 50000, capacidad=15)
+    )
+)
+
+# Operación 5: Intentar registrar un equipo con precio inválido.
+ejecutar(
+    5,
+    "Registrar equipo con precio negativo",
+    lambda: registrar_servicio(
+        AlquilerEquipo(2, "Proyector", -10000)
+    )
+)
+
+# Operación 6: Registrar alquiler de equipos correctamente.
+alquiler_proyector = ejecutar(
+    6,
+    "Registrar alquiler de proyector",
+    lambda: registrar_servicio(
+        AlquilerEquipo(3, "Proyector multimedia", 30000, cantidad=2)
+    )
+)
+
+# Operación 7: Registrar una asesoría especializada.
+asesoria_redes = ejecutar(
+    7,
+    "Registrar asesoría especializada",
+    lambda: registrar_servicio(
+        AsesoriaEspecializada(
+            4,
+            "Asesoría en redes",
+            80000,
+            "Redes y telecomunicaciones",
+            "virtual"
+        )
+    )
+)
+
+
+# Operación 8: Calcular costo de reserva de sala.
+ejecutar(
+    8,
+    "Calcular costo de reserva de sala con impuesto y descuento",
+    lambda: sala_reuniones.calcular_costo(
+        2, impuesto=19, descuento=10
+    )
+)
 
