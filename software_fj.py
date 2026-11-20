@@ -318,6 +318,38 @@ def ejecutar(numero, descripcion, operacion):
         registrar_log("INFO", f"Operación {numero} finalizada")
     return resultado
 
+# parte 3 - gestion de reservas
+
+# Clase Reserva que une el cliente, el servicio y la duracion
+class Reserva(Entidad):
+    def __init__(self, id, cliente, servicio, duracion=1):
+        super().__init__(id)
+
+        # Validar que el cliente exista y sea un objeto cliente valido
+        if not isinstance(cliente, Cliente):
+            raise ReservaError("El cliente no es valido")
+        
+        # Validar que el servicio sea un objeto servicio valido
+        if not isinstance(servicio, Servicio):
+            raise ReservaError("El servicio no es valido")
+
+        # Validar si el servicio esta disponible usando el metodo de yeny
+        if not servicio.esta_disponible():
+            raise ServicioNoDisponibleError(f"El servicio '{servicio.obtener_nombre()}' no esta disponible")
+
+        # Validar la duracion con el metodo del servicio
+        servicio.validar_parametros(duracion)
+
+        self.__cliente = cliente
+        self.__servicio = servicio
+        self.__duracion = duracion
+        self.__estado = "Pendiente"  # Estados: Pendiente, Confirmada, Cancelada, Procesada
+
+    def obtener_estado(self):
+        return self.__estado
+        
+
+
 
 #Simulación de 12 operaciones válidas e inválidas.
 registrar_log("INFO", "===== Inicio de la simulación =====")
