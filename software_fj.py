@@ -209,5 +209,43 @@ class ReservaSala(Servicio):
             f"Precio por hora: ${self.obtener_precio()}"
         )
 
+# Servicio especializado para alquiler de equipos.
+class AlquilerEquipo(Servicio):
+
+    def __init__(self, id, nombre, precio_base, cantidad=1, disponible=True):
+        super().__init__(id, nombre, precio_base, disponible)
+
+        if not isinstance(cantidad, int) or isinstance(cantidad, bool) or cantidad <= 0:
+            raise ServicioError("La cantidad de equipos debe ser positiva.")
+
+        self.__cantidad = cantidad
+
+    def validar_parametros(self, duracion):
+        duracion = self.validar_duracion(duracion)
+
+        if self.__cantidad <= 0:
+            raise ServicioError("La cantidad de equipos no es válida.")
+
+        return True
+
+    # Calcula el alquiler según días y cantidad de equipos.
+    def calcular_costo(self, duracion=1, impuesto=0, descuento=0):
+        self.validar_parametros(duracion)
+        duracion = self.validar_duracion(duracion)
+
+        return self.calcular_total(
+            duracion * self.__cantidad,
+            impuesto,
+            descuento
+        )
+
+    # Describir las caracteristicas del equipo
+    def describir(self):
+        return (
+            f"Equipo: {self.obtener_nombre()} | "
+            f"Cantidad: {self.__cantidad} | "
+            f"Precio por día: ${self.obtener_precio()}"
+        )
+
 
 
