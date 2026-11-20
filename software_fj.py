@@ -319,6 +319,13 @@ def ejecutar(numero, descripcion, operacion):
     return resultado
 
 
+#Simulación de 12 operaciones válidas e inválidas.
+registrar_log("INFO", "===== Inicio de la simulación =====")
+
+ana = ejecutar(1, "Registrar cliente válido", lambda: registrar_cliente("Ana Pérez", "ana@correo.com", "3001234567"))
+ejecutar(2, "Registrar cliente con email inválido", lambda: registrar_cliente("Luis Gómez", "luis-sin-arroba", "3009876543"))
+ejecutar(3, "Registrar cliente sin teléfono", lambda: registrar_cliente("Marta Ruiz", "marta@correo.com"))
+
 # SIMULACIÓN DE OPERACIONES DE SERVICIOS - YENY
 
 # Operación 4: Registrar una sala correctamente.
