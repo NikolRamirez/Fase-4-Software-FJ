@@ -284,5 +284,18 @@ class AsesoriaEspecializada(Servicio):
             f"Precio por hora: ${self.obtener_precio()}"
         )
 
+# Lista interna para almacenar los servicios.
+servicios = []
+
+
+# Función para registrar servicios.
+def registrar_servicio(servicio):
+
+    if not isinstance(servicio, Servicio):
+        raise ServicioError("El objeto no corresponde a un servicio válido.")
+
+    servicios.append(servicio)
+    return servicio
+
 
 
