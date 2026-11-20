@@ -247,5 +247,42 @@ class AlquilerEquipo(Servicio):
             f"Precio por día: ${self.obtener_precio()}"
         )
 
+# Servicio especializado para asesorías.
+class AsesoriaEspecializada(Servicio):
+
+    def __init__(
+        self, id, nombre, precio_base,
+        especialidad, modalidad="virtual", disponible=True
+    ):
+        super().__init__(id, nombre, precio_base, disponible)
+
+        if not isinstance(especialidad, str) or not especialidad.strip():
+            raise ServicioError("Debe especificar la especialidad.")
+
+        if modalidad not in ("virtual", "presencial"):
+            raise ServicioError("La modalidad debe ser virtual o presencial.")
+
+        self.__especialidad = especialidad.strip()
+        self.__modalidad = modalidad
+
+    def validar_parametros(self, duracion):
+        self.validar_duracion(duracion)
+        return True
+
+    # Calcula el costo según las horas de asesoría.
+    def calcular_costo(self, duracion=1, impuesto=0, descuento=0):
+        self.validar_parametros(duracion)
+        duracion = self.validar_duracion(duracion)
+
+        return self.calcular_total(duracion, impuesto, descuento)
+
+    def describir(self):
+        return (
+            f"Asesoría: {self.obtener_nombre()} | "
+            f"Especialidad: {self.__especialidad} | "
+            f"Modalidad: {self.__modalidad} | "
+            f"Precio por hora: ${self.obtener_precio()}"
+        )
+
 
 
