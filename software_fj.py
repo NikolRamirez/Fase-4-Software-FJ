@@ -379,7 +379,15 @@ class Reserva(Entidad):
             f"Duracion: {self.__duracion} | Estado: {self.__estado}"
         )
 
+# Lista interna de reservas
+reservas = []
 
+# Función para registrar reservas fácilmente
+def registrar_reserva(cliente, servicio, duracion=1):
+    reserva = Reserva(len(reservas) + 1, cliente, servicio, duracion)
+    reservas.append(reserva)
+    return reserva
+    
 
 #Simulación de 12 operaciones válidas e inválidas.
 registrar_log("INFO", "===== Inicio de la simulación =====")
