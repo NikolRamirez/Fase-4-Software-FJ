@@ -348,6 +348,36 @@ class Reserva(Entidad):
     def obtener_estado(self):
         return self.__estado
         
+    # Mwtodo para confirmar la reserva
+    def confirmar(self):
+        if self.__estado != "Pendiente":
+            raise OperacionNoPermitidaError(f"No se puede confirmar una reserva que esta '{self.__estado}'.")
+        self.__estado = "Confirmada"
+        return f"Reserva {self._id} confirmada con exito"
+
+    # Metodo para cancelar la reserva
+    def cancelar(self):
+        if self.__estado in ("Cancelada", "Procesada"):
+            raise OperacionNoPermitidaError(f"No se puede cancelar una reserva en estado '{self.__estado}'.")
+        self.__estado = "Cancelada"
+        return f"Reserva {self._id} cancelada"
+
+    # Metodo para procesar y calcular el costo final de la reserva
+    def procesar(self, impuesto=0, descuento=0):
+        if self.__estado != "Confirmada":
+            raise ReservaError("La reserva debe estar confirmada antes de procesarla")
+        
+        # Llamamos al calculo de costo que ya hizo Yeny en los servicios
+        costo_total = self.__servicio.calcular_costo(self.__duracion, impuesto, descuento)
+        self.__estado = "Procesada"
+        return f"Reserva {self._id} procesada. Total a pagar: ${costo_total}"
+
+    def describir(self):
+        return (
+            f"Reserva {self._id} | Cliente: {self.__cliente.obtener_nombre()} | "
+            f"Servicio: {self.__servicio.obtener_nombre()} | "
+            f"Duracion: {self.__duracion} | Estado: {self.__estado}"
+        )
 
 
 
