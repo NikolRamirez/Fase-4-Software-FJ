@@ -176,6 +176,38 @@ class Servicio(Entidad, ABC):
     def describir(self):
         pass
 
+# Servicio especializado para reservar salas.
+class ReservaSala(Servicio):
+
+    def __init__(self, id, nombre, precio_base, capacidad=10, disponible=True):
+        super().__init__(id, nombre, precio_base, disponible)
+
+        if not isinstance(capacidad, int) or isinstance(capacidad, bool) or capacidad <= 0:
+            raise ServicioError("La capacidad debe ser un entero positivo.")
+
+        self.__capacidad = capacidad
+
+    def validar_parametros(self, duracion):
+        duracion = self.validar_duracion(duracion)
+
+        if self.__capacidad <= 0:
+            raise ServicioError("La capacidad de la sala no es válida.")
+
+        return True
+
+    # Calcula el costo según las horas reservadas.
+    def calcular_costo(self, duracion=1, impuesto=0, descuento=0):
+        self.validar_parametros(duracion)
+        duracion = self.validar_duracion(duracion)
+
+        return self.calcular_total(duracion, impuesto, descuento)
+
+    def describir(self):
+        return (
+            f"Sala: {self.obtener_nombre()} | "
+            f"Capacidad: {self.__capacidad} personas | "
+            f"Precio por hora: ${self.obtener_precio()}"
+        )
 
 
 
