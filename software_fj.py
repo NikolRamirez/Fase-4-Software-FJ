@@ -380,3 +380,6 @@ ejecutar(
     )
 )
 
+#Cierre de la simulación
+registrar_log("INFO", "===== Fin de la simulación =====")
+print("\nPrograma terminado sin caerse. Revisa el archivo logs.txt")
