@@ -297,6 +297,28 @@ def registrar_servicio(servicio):
     servicios.append(servicio)
     return servicio
 
+#Función que ejecuta cada operación de la simulación sin dejar que un error detenga el programa.
+def ejecutar(numero, descripcion, operacion):
+    print(f"\n{numero}. {descripcion}")
+    resultado = None
+    try:
+        resultado = operacion()
+    except ErrorFJ as error:
+        print(f"   ERROR controlado: {error}")
+        registrar_log("ERROR", f"{descripcion} -> {error} | causa original: {error.__cause__!r}")
+    except Exception as error:
+        #Cualquier otro error inesperado.
+        print(f"   ERROR inesperado: {error}")
+        registrar_log("ERROR", f"{descripcion} -> error inesperado: {error!r}")
+    else:
+        texto = resultado.describir() if isinstance(resultado, Entidad) else resultado
+        print(f"   OK: {texto}")
+        registrar_log("INFO", f"{descripcion} -> OK")
+    finally:
+        registrar_log("INFO", f"Operación {numero} finalizada")
+    return resultado
+
+
 # SIMULACIÓN DE OPERACIONES DE SERVICIOS - YENY
 
 # Operación 4: Registrar una sala correctamente.
